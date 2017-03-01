@@ -1,0 +1,34 @@
+{% extends "homepage/header.html" %}
+
+{% block content %}
+<center>
+<form class="form-inline" action="next_page.php" method="GET">
+  <div class="form-group">
+    <input type="text" id="search_field" class="form-control" name="search_title" placeholder="Search By Name">
+    <!-- close the "form-group" div and start a new div -->
+  </div>
+  <!-- here we use "input-group" to get the submit tight "against" the input -->
+  <div class="input-group">
+    <input type="text" class="form-control" placeholder="Search for...">
+    <span class="input-group-btn">
+		<button type="submit" id="search_button" class="btn btn-danger">SEARCH</button>
+      </span>
+  </div>
+
+  <br><br><br><br>
+
+  <div class="form-group">
+    <input type="text" id="search_field" class="form-control" name="search_title" placeholder="Search By Name">
+    <!-- close the "form-group" div and start a new div -->
+  </div>
+  <div class="input-group">
+    <input type="text" class="form-control" placeholder="Search for...">
+    <span class="input-group-btn">
+		<button type="submit" id="search_button" class="btn btn-default">SEARCH</button>
+      </span>
+  </div>
+</form>
+</center>
+
+
+{% endblock %}
