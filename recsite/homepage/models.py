@@ -20,11 +20,11 @@ class Organization(models.Model):
 
 class Facilities(models.Model):
 	"""Facilities primary key is facility id"""
-	facilityadaaccess = models.CharField(max_length=100)
+	facilityadaaccess = models.CharField(max_length=1000)
 	facilitydescription = models.CharField(max_length=1000)
 	facilitydirections = models.CharField(max_length=100)
 	facilityemail = models.CharField(max_length=150)
-	facilityid = models.IntegerField(max_length=150)
+	facilityid = models.CharField(max_length=1000)
 	facilitylatitude = models.CharField(max_length=200)
 	facilitylongitude = models.CharField(max_length=200)
 	facilitymapurl = models.CharField(max_length=200)
