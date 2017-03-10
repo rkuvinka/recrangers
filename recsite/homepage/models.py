@@ -1,7 +1,9 @@
-from django.db import models
+# from django.db import models
 
 # Create your models here.
-class Organization(models.Model):
+from adaptor.model import CsvModel
+
+class Organization(CsvModel):
 	"""Organization is identified by orgid"""
 	lastupdateddate = models.CharField(max_length=100)
 	orgabbrname = models.CharField(max_length=10)
@@ -13,6 +15,9 @@ class Organization(models.Model):
 	orgtype = models.CharField(max_length=200)
 	orgurladdress = models.CharField(max_length=200)
 	orgurltext = models.CharField(max_length=200)
+
+	class Meta:
+		dbModel = Organization()
 
 	def __str__(self):
 		return self.orgname
