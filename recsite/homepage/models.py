@@ -3,56 +3,56 @@ from django.db import models
 # Create your models here.
 class Organization(models.Model):
 	"""Organization is identified by orgid"""
-	lastupdateddate = models.DateField(max_length=100)
-	orgabbrname = models.CharField(max_length=10)
-	orgid = models.CharField(max_length=10,primary_key=True)
-	orgimageurl = models.CharField(max_length=150)
-	orgjurisdictiontype = models.CharField(max_length=50)
-	orgname = models.CharField(max_length=200)
-	orgparentid = models.CharField(max_length=10)
-	orgtype = models.CharField(max_length=200)
-	orgurladdress = models.CharField(max_length=200)
-	orgurltext = models.CharField(max_length=200)
+	lastupdateddate = models.DateField(max_length=100,null=True)
+	orgabbrname = models.CharField(max_length=10,null=True)
+	orgid = models.IntegerField(primary_key=True)
+	orgimageurl = models.CharField(max_length=200,null=True)
+	orgjurisdictiontype = models.CharField(max_length=50,null=True)
+	orgname = models.CharField(max_length=200,null=True)
+	orgparentid = models.IntegerField(null=True)
+	orgtype = models.CharField(max_length=200,null=True)
+	orgurladdress = models.CharField(max_length=200,null=True)
+	orgurltext = models.CharField(max_length=200,null=True)
 
 	def __str__(self):
 		return self.orgname
 
 class Facilities(models.Model):
 	"""Facilities primary key is facility id"""
-	facilityadaaccess = models.CharField(max_length=1000)
-	facilitydescription = models.CharField(max_length=1000)
-	facilitydirections = models.CharField(max_length=100)
-	facilityemail = models.CharField(max_length=150)
-	facilityid = models.CharField(max_length=1000)
-	facilitylatitude = models.CharField(max_length=200)
-	facilitylongitude = models.CharField(max_length=200)
-	facilitymapurl = models.CharField(max_length=200)
-	facilityname = models.CharField(max_length=200)
-	facilityphone = models.CharField(max_length=200)
-	facilityreservationurl = models.CharField(max_length=200)
-	facilitytypedescription = models.CharField(max_length=200)
-	facilityusefeedescription = models.CharField(max_length=200)
-	keywords = models.CharField(max_length=200)
-	lastupdateddate = models.CharField(max_length=200)
-	legacyfacilityid = models.CharField(max_length=200)
-	orgfacilityid = models.CharField(max_length=200)
-	staylimit = models.CharField(max_length=200)
+	facilityadaaccess = models.CharField(max_length=20,null=True)
+	facilitydescription = models.CharField(max_length=1000,null=True)
+	facilitydirections = models.CharField(max_length=1000,null=True)
+	facilityemail = models.CharField(max_length=150,null=True)
+	facilityid = models.IntegerField(primary_key=True)
+	facilitylatitude = models.FloatField(null=True)
+	facilitylongitude = models.FloatField(null=True)
+	facilitymapurl = models.CharField(max_length=200,null=True)
+	facilityname = models.CharField(max_length=200,null=True)
+	facilityphone = models.CharField(max_length=200,null=True)
+	facilityreservationurl = models.CharField(max_length=200,null=True)
+	facilitytypedescription = models.CharField(max_length=200,null=True)
+	facilityusefeedescription = models.CharField(max_length=200,null=True)
+	keywords = models.CharField(max_length=200,null=True)
+	lastupdateddate = models.DateField(null=True)
+	legacyfacilityid = models.IntegerField(null=True)
+	orgfacilityid = models.IntegerField(null=True)
+	staylimit = models.CharField(max_length=200,null=True)
 
 	def __str__(self):
 		return self.facilityname
 
 class FacilityAddress(models.Model):
 	"""FacilityAddress primary key is address id"""
-	addresscountrycode = models.CharField(max_length=200)
-	addressstatecode = models.CharField(max_length=200)
-	city = models.CharField(max_length=200)
+	addresscountrycode = models.CharField(max_length=10,null=True)
+	addressstatecode = models.CharField(max_length=10,null=True)
+	city = models.CharField(max_length=200,null=True)
 	facilityaddressid = models.IntegerField(primary_key=True)
-	facilityaddresstype = models.CharField(max_length=200)
-	facilityid = models.CharField(max_length=200)
-	facilitystreetaddress1 = models.CharField(max_length=200)
-	facilitystreetaddress2 = models.CharField(max_length=200)
-	facilitystreetaddress3 = models.CharField(max_length=200)
-	postalcode = models.CharField(max_length=200)
+	facilityaddresstype = models.CharField(max_length=200,null=True)
+	facilityid = models.IntegerField(null=True)
+	facilitystreetaddress1 = models.CharField(max_length=200,null=True)
+	facilitystreetaddress2 = models.CharField(max_length=200,null=True)
+	facilitystreetaddress3 = models.CharField(max_length=200,null=True)
+	postalcode = models.IntegerField(null=True)
 
 	def __str__(self):
 		return self.facilityaddressid						

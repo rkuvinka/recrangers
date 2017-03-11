@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from homepage.models import Organization,RecAreas,Facilities,FacilityAddress,RecreationalActivity,EntityLink,RecAreaAddress,Tour,Attribute,PermitEntrance,Campsite,EntityActivities,Events,Media,MemberTours,OrgEntities,PermitEntranceZone,PermittedEquipment,RecAreaFacility
 import csv
-import datetime
+from datetime import datetime
 
 class Command(BaseCommand):
 	"""docstring for Command"""
@@ -23,13 +23,22 @@ class Command(BaseCommand):
 		for row in dataReader:
 			if object_ == 'organization':
 				org = Organization()
-				org.lastupdateddate = row[0]
+				try:
+					org.lastupdateddate = datetime.strptime(row[0],'%Y-%m-%d').date()
+				except:
+					org.lastupdateddate = None	
 				org.orgabbrname = row[1]
-				org.orgid = row[2]
+				try:
+					org.orgid = int(row[2])
+				except:
+					org.orgid = None	
 				org.orgimageurl = row[3]
 				org.orgjurisdictiontype = row[4]
 				org.orgname = row[5]
-				org.orgparentid = row[6]
+				try:
+					org.orgparentid = int(row[6])
+				except:
+					org.orgparentid = None	
 				org.orgtype = row[6]
 				org.orgurladdress = row[6]
 				org.orgurltext = row[7]
@@ -58,9 +67,18 @@ class Command(BaseCommand):
 				fac.facilitydescription = row[1]
 				fac.facilitydirections = row[2]
 				fac.facilityemail = row[3]
-				fac.facilityid = row[4]
-				fac.facilitylatitude = row[5]
-				fac.facilitylongitude = row[6]
+				try:
+					fac.facilityid = int(row[4])
+				except:
+					fac.facilityid = None
+				try:		
+					fac.facilitylatitude = float(row[5])
+				except:
+					fac.facilitylatitude = None
+				try:		
+					fac.facilitylongitude = float(row[6])
+				except:
+					fac.facilitylongitude = None	
 				fac.facilitymapurl = row[7]
 				fac.facilityname = row[8]
 				fac.facilityphone = row[9]
@@ -68,22 +86,40 @@ class Command(BaseCommand):
 				fac.facilitytypedescription = row[11]
 				fac.facilityusefeedescription = row[12]
 				fac.keywords = row[13]
-				fac.lastupdateddate = row[14]
-				fac.legacyfacilityid = row[15]
-				fac.orgfacilityid = row[16]
+				try:
+					fac.lastupdateddate = datetime.strptime(row[14],'%Y-%m-%d').date()
+				except:
+					fac.lastupdateddate = None
+				try:	
+					fac.legacyfacilityid = int(row[15])
+				except:
+					fac.legacyfacilityid = None
+				try:		
+					fac.orgfacilityid = int(row[16])
+				except:
+					fac.orgfacilityid = None	
 				fac.save()
 			elif object_ == 'facility_address':
 				facadd = FacilityAddress()
 				facadd.addresscountrycode = row[0]
 				facadd.addressstatecode = row[1]
 				facadd.city = row[2]
-				facadd.facilityaddressid = row[3]
+				try:
+					facadd.facilityaddressid = int(row[3])
+				except:
+					facadd.facilityaddressid = None
 				facadd.facilityaddresstype = row[4]
-				facadd.facilityid = row[5]
+				try:
+					facadd.facilityid = int(row[5])
+				except:
+					facadd.facilityid = None	
 				facadd.facilitystreetaddress1 = row[6]
 				facadd.facilitystreetaddress2 = row[7]
 				facadd.facilitystreetaddress3 = row[8]
-				facadd.postalcode = row[9]
+				try:
+					facadd.postalcode = int(row[9])
+				except:
+					facadd.postalcode = None	
 				facadd.save()
 			elif object_ == 'rec_activity':
 				recactivity = RecreationalActivity()
