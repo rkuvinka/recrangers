@@ -1,4 +1,7 @@
 from django.db import models
+import django.db.models.options as options
+
+options.DEFAULT_NAMES = options.DEFAULT_NAMES + ( 'es_index_name','es_type_name','es_mapping' )
 
 # Create your models here.
 class Organization(models.Model):
@@ -16,6 +19,63 @@ class Organization(models.Model):
 
 	def __str__(self):
 		return self.orgname
+
+	class Meta:
+		"""Used for elasticsearch. Meta-fields are used to customize how a document’s metadata associated is treated."""
+		es_index_name = 'django'
+		es_type_name = 'organization'
+		es_mapping = {
+			'properties': {
+				'lastupdateddate': {'type':'date'},
+				'orgabbrname': {'type':'string','index':'not_analyzed'},
+				'orgid': {'type':'integer','index':'not_analyzed'},
+				'orgimageurl': {'type':'string'},
+				'orgjurisdictiontype': {'type':'string','index':'not_analyzed'},
+				'orgname': {
+						'type':'completion',
+						'analyzer': 'simple',
+	                    # 'payloads': True,
+	                    'preserve_separators': True,
+	                    'preserve_position_increments': True,
+	                    'max_input_length': 500
+	                }, # Suggest while typing
+				'orgparentid': {'type':'integer','index':'not_analyzed'},
+				'orgtype': {'type':'string','index':'not_analyzed'},
+				'orgurladdress': {'type':'string'},
+				'orgurltext': {'type':'string'},
+			}	
+		}
+	
+	def es_repr(self):
+		data = {}
+		mapping = self._meta.es_mapping
+		data['_id'] = self.pk
+		for field_name in mapping['properties'].keys():
+			data[field_name] = self.field_es_repr(field_name)
+		return data
+
+	def field_es_repr(self, field_name):
+		config = self._meta.es_mapping['properties'][field_name]
+		if hasattr(self, 'get_es_%s' % field_name):
+			field_es_value = getattr(self, 'get_es_%s' % field_name)()
+		else:
+			if config['type'] == 'object':
+				related_object = getattr(self, field_name)
+				field_es_value = {}
+				field_es_value['_id'] = related_object.pk
+				for prop in config['properties'].keys():
+					field_es_value[prop] = getattr(related_object, prop)
+			else:
+				field_es_value = getattr(self, field_name)
+		return field_es_value
+
+	def get_es_orgname_complete(self):
+		return {
+            "input": [self.orgname],
+            "output": "%s" % (self.orgname),
+            "payload": {"pk": self.pk},
+        }				
+
 
 class Facilities(models.Model):
 	"""Facilities primary key is facility id"""
@@ -87,6 +147,54 @@ class RecreationalActivity(models.Model):
 
 	def __str__(self):
 		return self.activityname
+
+	class Meta:
+		"""docstring for Meta"""
+		es_index_name = 'django'
+		es_type_name = 'recreationalactivity'
+		es_mapping = {
+			'properties': {
+				'activityid': {'type':'integer','index':'not_analyzed'},
+				'activityname': {'type':'string','index':'not_analyzed'
+						# 'type':'completion',
+						# 'analyzer': 'simple',
+	     #                'preserve_separators': True,
+	     #                'preserve_position_increments': True,
+	     #                'max_input_length': 100
+	                }, # Suggest while typing
+				}
+			}
+
+	def es_repr(self):
+		data = {}
+		mapping = self._meta.es_mapping
+		data['_id'] = self.pk
+		for field_name in mapping['properties'].keys():
+			data[field_name] = self.field_es_repr(field_name)
+		return data
+		
+	def field_es_repr(self, field_name):
+		config = self._meta.es_mapping['properties'][field_name]
+		if hasattr(self, 'get_es_%s' % field_name):
+			field_es_value = getattr(self, 'get_es_%s' % field_name)()
+		else:
+			if config['type'] == 'object':
+				related_object = getattr(self, field_name)
+				field_es_value = {}
+				field_es_value['_id'] = related_object.pk
+				for prop in config['properties'].keys():
+					field_es_value[prop] = getattr(related_object, prop)
+			else:
+				field_es_value = getattr(self, field_name)
+		return field_es_value	
+
+	def get_es_activityname_complete(self):
+		return {
+			"input": [self.activityname],
+			"output": "%s" % (self.activityname),
+	        "payload": {"pk": self.pk},
+		}
+					
 
 class EntityLink(models.Model):
 	"""EntityLink primary key is address id"""

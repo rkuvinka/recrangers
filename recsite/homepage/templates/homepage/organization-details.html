@@ -1,0 +1,38 @@
+{% extends "homepage/index.html" %}
+
+{% block container %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">{{organization.orgname}}</h1>
+
+          <h2 class="sub-header">Organization details</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Org ID</th>
+                  <th>Org name</th>
+                  <th>Abbr</th>
+                  <th>Jurisdiction type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ organization.pk }}</td>
+                  <td>{{ organization.pk }}</td>
+                  <td>{{ organization.orgname }}</td>
+                  <td>{{ organization.orgabbrname }}</td>
+                  <td>{{ organization.orgjurisdictiontype }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+    </div>
+   </div>
+</div>
+
+{% endblock container %}
